@@ -101,7 +101,7 @@ function keyboard(letter){
                 trys-=1;
                 return;
             }}
-
+console.log(found);
 function lightmode(){
                 document.body.classList.toggle("lightmode");
                 if(document.getElementById("mode").textContent==="Dark Mode"){
@@ -122,6 +122,7 @@ function lightmode(){
             }
             
  async function playagain(){
+    document.getElementById("reopen").style.visibility="hidden";
     const key = document.querySelectorAll(".keys");
     
        for(let i=1; i<31;i++){
@@ -133,7 +134,7 @@ function lightmode(){
         key[i-1].style.border="1px solid black";
         key[i-1].style.color="black";
         }
-       se
+       
   }
   
       nb=1;
@@ -171,8 +172,12 @@ function closedd(){
                 blurOverlay.remove();
                 console.log(words.wordlist);
             }
+            
  function reopen(){
-                document.getElementById("status").textContent="YOU HAVE WON!!";
+    if(found==true){
+        document.getElementById("reopen").style.visibility="visible";
+
+                     document.getElementById("status").textContent="YOU HAVE WON!!";
                      document.getElementById("wordleword").textContent="The word was "+ wordleWord+"";
                      
                      document.getElementById("score").textContent="It took you "+guesses+" guesses";
@@ -188,6 +193,8 @@ function closedd(){
                      stats.style.position = 'absolute';
                      stats.style.zIndex = '100';
                      stats.classList.add("open-stats");
+                    
+                    }
             }
                 window.keyboard =keyboard;
                 window.closedd = closedd;

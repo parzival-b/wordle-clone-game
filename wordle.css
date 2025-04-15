@@ -50,7 +50,7 @@ transition: all 0.5s ease-in;
    cursor:pointer;
     align-items: center;
   transition: all 0.4s ease-in;
-  visibility:visible;
+  visibility:hidden;
 }
 #reopen:hover{
     transform: translateZ(100px) scale(1.2) ;
