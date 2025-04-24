@@ -3,7 +3,6 @@ import random from "./words.js"
 let words = new random();
 
 let wordleWord= await words.randomWord();
- console.log(wordleWord);
 let trys=1;
 let nb=1;
 let guesses=0;
@@ -101,7 +100,6 @@ function keyboard(letter){
                 trys-=1;
                 return;
             }}
-console.log(found);
 function lightmode(){
                 document.body.classList.toggle("lightmode");
                 if(document.getElementById("mode").textContent==="Dark Mode"){
@@ -144,7 +142,6 @@ function lightmode(){
       found=false;
 
       wordleWord= await words.randomWord();
-      console.log(wordleWord);
 
     
       key.forEach(key => {
