@@ -18,26 +18,62 @@ const password = document.getElementById("password")
 const message= document.getElementById("errors");
 let register=true;
 let apiBase="/"
+let token = localStorage.getItem('token')
 
 async function auth(){
-    if(email==null || password==null ){
+    let emailVal=email.value
+        let passwordVal=password.value
+    if(emailVal==null || passwordVal==null ){
         message.innerHTML="You Have something missing";
         return;
     }
 
     else{
+        
+        let data
+        try{
         if(register){
-            const response = await fetch(apiBase, "auth/register");
+            const response = await fetch(apiBase, "auth/register",{
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username: emailVal, password: passwordVal})
+
+                
+
+
+            });
+            data = await response.json()
+
             
         }
+ else{
+    const response = await fetch(apiBase, "auth/login",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({username: emailVal, password: passwordVal})
+    })
+    data = await response.json()
+    }
+
+    if(data.token){
+        token = data.token
+        localStorage.setItem("token:",token)
+    }
+
+
+
 
     }
+    catch(err){
+        console.log(error)
+        }
+
 
     
 
     
 }
-
+}
 
 function keyboard(letter){
         if(word.length<5 && found===false){
