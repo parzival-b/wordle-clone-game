@@ -1,0 +1,25 @@
+{
+  "name": "wordle",
+  "version": "1.0.0",
+  "main": "db.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/parzival-b/wordle-clone-game.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/parzival-b/wordle-clone-game/issues"
+  },
+  "homepage": "https://github.com/parzival-b/wordle-clone-game#readme",
+  "description": "",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

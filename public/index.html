@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wordle</title>
+    <link rel="stylesheet" href="wordle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+
+
+
+<body>
+  <div class="authentication">
+    <h1 id="prompt">
+        Create Your Account
+
+    </h1>
+    
+    <input class="inputs" type="text" placeholder="email" id="email" >
+    <br>
+    <input class="inputs" type="text" placeholder="password" id="password" >
+    <br>
+    <button id="submit" onclick="auth()">Submit</button>
+    <p id="errors"></p>
+
+    <p id="promptChange">Existing users sign in, <a id="changeAuth" href="#"> Here</a></p>
+   
+</div>
+
+
+
+
+
+
+    <div class="mainpage" style="display: none;">
+    <h1 class="title " id="title">Wordle</h1>
+    <button class="lightmode"  id="mode" onclick="lightmode()">
+        Light Mode
+    </button>
+    <button id="reopen" class="reopen" onclick="reopen()"><i class="fa-solid fa-square-poll-vertical"></i></button>
+    <div class="stats" id="stats">
+        <button class="close" onclick="closedd()">
+           <i class="fa-regular fa-circle-xmark"></i></button>
+
+        <h1 id="status">
+            .
+        </h1>
+        <h2 id="wordleword">
+            .
+        </h2>
+        <h3 id="score">
+            .
+
+        </h3>
+        <button class="again" id="refresh" onclick="playagain()">
+            Play Again!!
+        </button>
+
+
+
+
+    </div>
+    <hr class="line"/>
+    <div class="allcontainer">
+    <div class="container">
+        <div class="try" id="try1">
+            <div class="letters" id="letter1" >
+                
+            </div>
+            <div class="letters" id="letter2">
+
+            </div>
+            <div class="letters" id="letter3">
+
+            </div>
+            <div class="letters" id="letter4">
+
+            </div>
+            <div class="letters" id="letter5">
+
+            </div>
+            
+        </div>
+
+        <div class="try" id="try2">
+            <div class="letters" id="letter6" >
+
+            </div>
+            <div class="letters" id="letter7">
+
+            </div>
+            <div class="letters" id="letter8" >
+
+            </div>
+            <div class="letters" id="letter9" >
+
+            </div>
+            <div class="letters" id="letter10"  >
+
+            </div>
+            
+        </div>
+        <div class="try" id="try3">
+            <div class="letters" id="letter11">
+
+            </div>
+            <div class="letters" id="letter12" >
+
+            </div>
+            <div class="letters" id="letter13">
+
+            </div>
+            <div class="letters" id="letter14" >
+
+            </div>
+            <div class="letters" id="letter15">
+
+            </div>
+            
+        </div>
+        <div class="try" id="try4">
+            <div class="letters"  id="letter16">
+
+            </div>
+            <div class="letters" id="letter17">
+
+            </div>
+            <div class="letters" id="letter18">
+
+            </div>
+            <div class="letters" id="letter19">
+
+            </div>
+            <div class="letters" id="letter20">
+
+            </div>
+            
+        </div>
+        <div class="try" id="try5">
+            <div class="letters"  id="letter21">
+
+            </div>
+            <div class="letters" id="letter22">
+
+            </div>
+            <div class="letters" id="letter23">
+
+            </div>
+            <div class="letters" id="letter24">
+
+            </div>
+            <div class="letters" id="letter25">
+
+            </div>
+            
+        </div>
+        <div class="try" id="try5">
+            <div class="letters"  id="letter26">
+
+            </div>
+            <div class="letters" id="letter27">
+
+            </div>
+            <div class="letters" id="letter28">
+
+            </div>
+            <div class="letters" id="letter29">
+
+            </div>
+            <div class="letters" id="letter30">
+
+            </div>
+            
+        </div>
+       
+        
+
+    </div><br>
+    <div class="keyboard">
+        <button class="keys" id="Q" onclick="keyboard('Q')"> Q </button>
+        <button class="keys" id="W"onclick="keyboard('W')"> W </button>
+        <button class="keys" id="E" onclick="keyboard('E')"> E </button>
+        <button class="keys" id="R" onclick="keyboard('R')"> R </button>
+        <button class="keys" id="T" onclick="keyboard('T')"> T </button>
+        <button class="keys" id="Y" onclick="keyboard('Y')"> Y </button>
+        <button class="keys" id="U" onclick="keyboard('U')"> U </button>
+        <button class="keys" id="I"onclick="keyboard('I')"> I </button>
+        <button class="keys" id="O" onclick="keyboard('O')"> O </button>
+        <button class="keys" id="P" onclick="keyboard('P')"> P </button><br><br>
+        <button class="keys" id="A" onclick="keyboard('A')"> A </button>
+        <button class="keys" id="S"  onclick="keyboard('S')"> S </button>
+        <button class="keys" id="D"  onclick="keyboard('D')"> D </button>
+        <button class="keys" id="F"  onclick="keyboard('F')"> F </button>
+        <button class="keys" id="G"  onclick="keyboard('G')"> G </button>
+        <button class="keys" id="H"  onclick="keyboard('H')"> H </button>
+        <button class="keys" id="J"  onclick="keyboard('J')"> J </button>
+        <button class="keys" id="K"  onclick="keyboard('K')"> K </button>
+        <button class="keys" id="L"  onclick="keyboard('L')"> L </button><br><br>
+
+        <button class="keys" id="enter" onclick="keyboard('enter')">ENTER</button>
+        <button class="keys" id="Z"  onclick="keyboard('Z')"> Z </button>
+        <button class="keys" id="X"  onclick="keyboard('X')"> X </button>
+        <button class="keys" id="C"  onclick="keyboard('C')"> C </button>
+        <button class="keys" id="V"  onclick="keyboard('V')"> V </button>
+        <button class="keys" id="B"  onclick="keyboard('B')"> B </button>
+        <button class="keys" id="N"  onclick="keyboard('N')"> N </button>
+        <button class="keys" id="M"  onclick="keyboard('M')"> M </button>
+        <button class="keys" id="erase" onclick="keyboard('erase')"> <i class="fas fa-backspace"></i></button>
+
+    </div>
+</div>
+</div>
+<script  type="module" src="wordle.js"> </script>
+
+
+</body>
+</html>
