@@ -11,19 +11,52 @@ let stats=document.getElementById("stats");
 const blurOverlay = document.createElement('div');
 let word="";
 let last_guessed;
+
 const auth = document.querySelector(".authentication");
 const  mainPage = document.querySelector(".mainPage");
 const email = document.getElementById("email");
 const password = document.getElementById("password")
 const message= document.getElementById("errors");
+const changeAuth= document.getElementById("changeAuth")
+const prompt = document.getElementById("prompt")
+const promptChange = document.getElementById("promptChange")
 let register=true;
 let apiBase="/"
 let token = localStorage.getItem('token')
 
-async function auth(){
+
+function change(event){
+
+event.preventDefault()
+        if(register){
+            register=!register
+            prompt.textContent="Login to your account"
+            promptChange.textContent="To Create an Account Press "
+           return;
+        }
+        else{
+            register=!register
+            prompt.textContent="Create Your Account"
+              promptChange.textContent="Existing users sign in, "
+              return;
+        }
+
+        
+
+
+
+    }
+
+
+
+
+
+
+
+async function authentication(){
     let emailVal=email.value
         let passwordVal=password.value
-    if(emailVal==null || passwordVal==null ){
+    if(emailVal==null || passwordVal==null || !emailVal.includes("@")){
         message.innerHTML="You Have something missing";
         return;
     }
@@ -259,4 +292,4 @@ function closedd(){
                 window.lightmode = lightmode;
                 window.playagain = playagain;
                 window.reopen = reopen;
-                window.login= login;
+               window.change=change;

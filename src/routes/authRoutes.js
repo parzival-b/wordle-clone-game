@@ -4,6 +4,11 @@ import bcrypt from 'bcryptjs'
 const router= express.Router()
 
 router.get('/register',(req,res)=>{
+    const {username,password}= req.body
+    const hashedpassword = bcrypt.hashSync(password)
+
+    
+
 
 })
 
