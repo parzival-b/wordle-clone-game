@@ -2,10 +2,19 @@
 GET http://localhost:4001
 
 ### POST /auth/register
-POST http://localhost:4001
+POST http://localhost:4001/auth/register
 Content-Type: application/json
 
 {
-    "username"::"test@gmail.com",
+    "username":"test@gmail.com",
+    "password":"12345678"
+}
+
+### POST /auth/lgoin
+POST http://localhost:4001/auth/login
+Content-Type: application/json
+
+{
+    "username":"test@gmail.com",
     "password":"12345678"
 }

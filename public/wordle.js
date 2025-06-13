@@ -13,7 +13,7 @@ let word="";
 let last_guessed;
 
 const auth = document.querySelector(".authentication");
-const  mainPage = document.querySelector(".mainPage");
+const  mainPage = document.querySelector(".mainpage");
 const email = document.getElementById("email");
 const password = document.getElementById("password")
 const message= document.getElementById("errors");
@@ -51,6 +51,7 @@ event.preventDefault()
 
 
 
+ 
 
 
 async function authentication(){
@@ -66,7 +67,7 @@ async function authentication(){
         let data
         try{
         if(register){
-            const response = await fetch(apiBase, "auth/register",{
+            const response = await fetch(apiBase+ "auth/register",{
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({username: emailVal, password: passwordVal})
@@ -80,7 +81,7 @@ async function authentication(){
             
         }
  else{
-    const response = await fetch(apiBase, "auth/login",{
+    const response = await fetch(apiBase+ "auth/login",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body: JSON.stringify({username: emailVal, password: passwordVal})
@@ -91,6 +92,8 @@ async function authentication(){
     if(data.token){
         token = data.token
         localStorage.setItem("token:",token)
+        auth.style.display="none"
+        mainPage.style.display="block"
     }
 
 
@@ -98,7 +101,7 @@ async function authentication(){
 
     }
     catch(err){
-        console.log(error)
+        console.log(err.message)
         }
 
 
@@ -293,3 +296,4 @@ function closedd(){
                 window.playagain = playagain;
                 window.reopen = reopen;
                window.change=change;
+               window.authentication=authentication;

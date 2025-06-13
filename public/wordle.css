@@ -1,19 +1,19 @@
 body{
 background-color:rgba(0,0,0,0.9);
 color: white;
-display:flex;
-justify-content: center;
-align-items: center;
+display:block;
 padding-top: 10px;
-margin:0;
-min-height: 100vh;
+
 
 transition: all 0.5s ease-in;
 }
 
 
 .authentication{
-    
+    position: relative;
+    left:600px;
+    top:160px;
+      margin:0;
       padding-top: 15px;
       border: 1px solid rgba(255, 255, 255, 0.01);
       background-color: rgba(255, 255, 255, 0.03); 
@@ -21,6 +21,8 @@ transition: all 0.5s ease-in;
       align-items: center;
       display: flex;
       flex-direction: column;
+      align-self:center;
+      justify-content: center;
       height:380px;
       width:340px;
       box-shadow:5px 5px 100px rgba(255,255,255,0.2);

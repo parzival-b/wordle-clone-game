@@ -1,21 +1,46 @@
 import express from 'express'
 import bcrypt from 'bcryptjs'
+import db from '../db.js'
+import jwt from 'jsonwebtoken'
 
 const router= express.Router()
 
-router.get('/register',(req,res)=>{
+router.post('/register',(req,res)=>{
     const {username,password}= req.body
-    const hashedpassword = bcrypt.hashSync(password)
+    const hashedpassword = bcrypt.hashSync(password,8)
+    try{
+        const insertUser = db.prepare(`INSERT INTO Users (username , password) VALUES (?,?)`)
+         const result=insertUser.run(username, hashedpassword)
+         const token = jwt.sign({id: result.lastInsertRowid},process.env.JWT_SECRET,{expiresIn: '24h'})
 
-    
-
-
+         res.json({token})
+    }
+    catch(err){
+        console.log("error in registering: "+err.message )
+        res.sendStatus(503)
+    }
 })
 
 
 
-router.get('/login',(req,res)=>{
-    
+router.post('/login',(req,res)=>{
+    const {username, password}= req.body
+   try{
+     const selectUser = db.prepare(`SELECT * FROM Users WHERE username=?`)
+    const user = selectUser.get(username)
+    if(!user){return res.status(404).send({message:'User not found'})}
+
+    const comparePass = bcrypt.compareSync(password,user.password)
+    if(!comparePass){return res.status(404).send({message:'wrong password'})}
+
+
+const token = jwt.sign({id: user.lastInsertRowid},process.env.JWT_SECRET,{expiresIn:'24h'})
+     res.json({token})
+   }
+   catch(err){
+    console.log("error in loggining in: "+err )
+        res.sendStatus(503)
+   }
 })
 
 
