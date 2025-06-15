@@ -7,11 +7,17 @@ let letterPos=1;
 let nb=1;
 let guesses=0;
 let found=false;
-let stats=document.getElementById("stats");
+let results=document.getElementById("stats");
 const blurOverlay = document.createElement('div');
 let word="";
 let last_guessed;
-
+let wins=0
+let losses=0
+let games=0
+let stats=[]
+const displaywins=document.getElementById("wins")
+const displaylosses=document.getElementById("losses")
+const displayGamesPlayed=document.getElementById("gamesPlayed")
 const auth = document.querySelector(".authentication");
 const  mainPage = document.querySelector(".mainpage");
 const email = document.getElementById("email");
@@ -47,16 +53,9 @@ event.preventDefault()
 
     }
 
-
-
-
-
- 
-
-
 async function authentication(){
     let emailVal=email.value
-        let passwordVal=password.value
+    let passwordVal=password.value
     if(emailVal==null || passwordVal==null || !emailVal.includes("@")){
         message.innerHTML="You Have something missing";
         return;
@@ -91,27 +90,51 @@ async function authentication(){
 
     if(data.token){
         token = data.token
-        localStorage.setItem("token:",token)
+        localStorage.setItem("token",token)
+
+        await fetchStats()
         auth.style.display="none"
         mainPage.style.display="block"
+        
     }
-
-
-
-
     }
     catch(err){
         console.log(err.message)
         }
 
-
-    
-
-    
 }
 }
+console.log(token)
 
-function keyboard(letter){
+
+async function fetchStats(){
+    try{
+        const response = await fetch(apiBase+'stats',{
+            method:'GET',
+            headers:{'Authorization':token}
+
+        })
+
+         const statsData = await response.json()
+         
+if(statsData.length>0){
+         displaywins.innerHTML= statsData[0].wins;
+         displaylosses.innerHTML=statsData[0].losses
+         displayGamesPlayed.innerHTML=statsData[0].gamesPlayed
+    }
+
+         console.log(statsData)
+        
+    }catch(err){
+        console.log(err.message)
+
+
+    }
+}
+
+
+
+ function keyboard(letter){
         if(word.length<5 && found===false){
             if(letter!=="enter" && letter!=="erase"){
             document.getElementById("letter"+letterPos).textContent=letter;
@@ -150,11 +173,14 @@ function keyboard(letter){
                 word="";
                 
                 if (last_guessed === wordleWord) {
+                  
+
                    
-                     document.getElementById("status").textContent="YOU HAVE WON!!";
-                     document.getElementById("wordleword").textContent="The word was "+ wordleWord+"";
+                    // document.getElementById("status").textContent="YOU HAVE WON!!";
+                     //document.getElementById("wordleword").textContent="The word was "+ wordleWord+"";
+                     wins++;
                      
-                     document.getElementById("score").textContent="It took you "+guesses+" guesses";
+                     //document.getElementById("score").textContent="It took you "+guesses+" guesses";
                      blurOverlay.style.position = 'fixed';
                      blurOverlay.style.top = '0';
                      blurOverlay.style.left = '0';
@@ -164,17 +190,18 @@ function keyboard(letter){
                      blurOverlay.style.zIndex = '50';
                      document.body.appendChild(blurOverlay);
 
-                     stats.style.position = 'absolute';
-                     stats.style.zIndex = '100';
-                     stats.classList.add("open-stats");
+                     results.style.position = 'absolute';
+                     results.style.zIndex = '100';
+                     results.classList.add("open-stats");
              
                      found=true;
                 } 
                 else if (nb >= 30) { 
-                    document.getElementById("status").textContent="You have lost :(";
-                    document.getElementById("wordleword").textContent="The word was "+ wordleWord+"";
-                     document.getElementById("score").textContent="It took you "+guesses+" guesses";
-                     
+                    // document.getElementById("status").textContent="You have lost :(";
+                     //document.getElementById("wordleword").textContent="The word was "+ wordleWord+"";
+                     //document.getElementById("score").textContent="It took you "+guesses+" guesses";
+                     losses++;
+
                      blurOverlay.style.position = 'fixed';
                      blurOverlay.style.top = '0';
                      blurOverlay.style.left = '0';
@@ -184,9 +211,9 @@ function keyboard(letter){
                      blurOverlay.style.zIndex = '50';
                      document.body.appendChild(blurOverlay);
 
-                     stats.style.position = 'absolute';
-                     stats.style.zIndex = '100';
-                     stats.classList.add("open-stats"); 
+                     results.style.position = 'absolute';
+                     results.style.zIndex = '100';
+                     results.classList.add("open-stats"); 
                 }
             }
             }
@@ -204,20 +231,21 @@ function lightmode(){
                    document.getElementById("reopen").style.backgroundColor=" rgba(0,0,0,0.01)";
                    document.getElementById("reopen").style.color="white";
                    document.getElementById("reopen").style.border="1px  rgba(0, 0, 0, 0.1)";
-              document.getElementById("mode").textContent="Light Mode";
-              document.getElementById("title").style.color="white";
+                   document.getElementById("mode").textContent="Light Mode";
+                   document.getElementById("title").style.color="white";
             }
                 else{
                     document.getElementById("reopen").style.backgroundColor="white";
                     document.getElementById("reopen").style.color="black";
-                  document.getElementById("reopen").style.border="1px  white";
-                  document.getElementById("mode").textContent="Dark Mode";
-                  document.getElementById("title").style.color="black";
+                    document.getElementById("reopen").style.border="1px  white";
+                    document.getElementById("mode").textContent="Dark Mode";
+                    document.getElementById("title").style.color="black";
                 }
             }
             
  async function playagain(){
-    document.getElementById("reopen").style.visibility="hidden";
+    games++;
+  
     const key = document.querySelectorAll(".keys");
     
        for(let i=1; i<31;i++){
@@ -253,7 +281,7 @@ key.addEventListener("mouseout", event=> {
     event.target.style.color="black";
 });
       });
-                stats.classList.remove("open-stats");
+                results.classList.remove("open-stats");
                 blurOverlay.remove();
                return; 
             }
@@ -262,19 +290,20 @@ key.addEventListener("mouseout", event=> {
             
 function closedd(){
                 document.getElementById("reopen").style.visibility="visible";
-                stats.classList.remove("open-stats");
+                results.classList.remove("open-stats");
                 blurOverlay.remove();
-                console.log(words.wordlist);
+             
             }
             
- function reopen(){
-    if(found==true){
-        document.getElementById("reopen").style.visibility="visible";
+ async function reopen(){
+                      
+   // if(found==true){
+      //  document.getElementById("reopen").style.visibility="visible";
 
-                     document.getElementById("status").textContent="YOU HAVE WON!!";
-                     document.getElementById("wordleword").textContent="The word was "+ wordleWord+"";
+                    // document.getElementById("status").textContent="YOU HAVE WON!!";
+                  //   document.getElementById("wordleword").textContent="The word was "+ wordleWord+"";
                      
-                     document.getElementById("score").textContent="It took you "+guesses+" guesses";
+                   //  document.getElementById("score").textContent="It took you "+guesses+" guesses";
                      blurOverlay.style.position = 'fixed';
                      blurOverlay.style.top = '0';
                      blurOverlay.style.left = '0';
@@ -284,12 +313,31 @@ function closedd(){
                      blurOverlay.style.zIndex = '50';
                      document.body.appendChild(blurOverlay);
 
-                     stats.style.position = 'absolute';
-                     stats.style.zIndex = '100';
-                     stats.classList.add("open-stats");
+                     results.style.position = 'absolute';
+                     results.style.zIndex = '100';
+                     results.classList.add("open-stats");
                     
                     }
-            }
+
+
+                   /* if(token){
+                         
+                        mainPage.style.display="block"
+                         fetchStats()
+                    }
+                    else{
+                        auth.style.display="flex";
+                    }*/
+                  
+if(token && token!=null){
+      mainPage.style.display="block"
+      auth.style.display="none";
+     await fetchStats()
+
+}
+
+
+                       
                 window.keyboard =keyboard;
                 window.closedd = closedd;
                 window.lightmode = lightmode;

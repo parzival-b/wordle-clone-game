@@ -11,8 +11,16 @@ router.post('/register',(req,res)=>{
     try{
         const insertUser = db.prepare(`INSERT INTO Users (username , password) VALUES (?,?)`)
          const result=insertUser.run(username, hashedpassword)
-         const token = jwt.sign({id: result.lastInsertRowid},process.env.JWT_SECRET,{expiresIn: '24h'})
+         const userId= result.lastInsertRowid
+         const wins=0
+         const losses=0
+         const games=0
+         const firstGame= db.prepare('INSERT INTO score (user_Id,wins,losses,gamesPlayed) VALUES (?,?,?,?)')
+         firstGame.run(userId,wins,losses,games)
 
+        console.log('Inserted user ID:', result.lastInsertRowid);
+         const token = jwt.sign({id: result.lastInsertRowid},process.env.JWT_SECRET,{expiresIn: '24h'})
+console.log(token)
          res.json({token})
     }
     catch(err){
@@ -34,7 +42,7 @@ router.post('/login',(req,res)=>{
     if(!comparePass){return res.status(404).send({message:'wrong password'})}
 
 
-const token = jwt.sign({id: user.lastInsertRowid},process.env.JWT_SECRET,{expiresIn:'24h'})
+const token = jwt.sign({id: user.id},process.env.JWT_SECRET,{expiresIn:'24h'})
      res.json({token})
    }
    catch(err){
