@@ -19,9 +19,31 @@ if (!req.userId) {
 
 })
 router.put('/',(req,res)=>{
+  const {outcome}= req.body
+let updateStats
 
+if(outcome==1){
+     updateStats= db.prepare('UPDATE Score SET gamesPlayed=gamesPlayed+1, wins=wins+1 WHERE user_id=?')
+}
+else{
+    updateStats= db.prepare('UPDATE Score SET gamesPlayed=gamesPlayed+1, losses=losses+1 WHERE user_id=?')
+}
+
+
+  updateStats.run(req.userId)
+
+  const getUpdated=db.prepare('SELECT * FROM Score WHERE user_id=?')
+
+  const Updated = getUpdated.all(req.userId)
+
+  res.json(Updated)
+  
 
 })
+
+
+
+
 
 
 export default router

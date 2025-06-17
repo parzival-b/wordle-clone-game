@@ -15,15 +15,15 @@ router.post('/register',(req,res)=>{
          const wins=0
          const losses=0
          const games=0
-         const firstGame= db.prepare('INSERT INTO score (user_Id,wins,losses,gamesPlayed) VALUES (?,?,?,?)')
+         const firstGame= db.prepare('INSERT INTO Score (user_Id,wins,losses,gamesPlayed) VALUES (?,?,?,?)')
          firstGame.run(userId,wins,losses,games)
 
-        console.log('Inserted user ID:', result.lastInsertRowid);
+         console.log('Inserted user ID:', result.lastInsertRowid);
          const token = jwt.sign({id: result.lastInsertRowid},process.env.JWT_SECRET,{expiresIn: '24h'})
-console.log(token)
+         console.log(token)
          res.json({token})
     }
-    catch(err){
+    catch(err){ 
         console.log("error in registering: "+err.message )
         res.sendStatus(503)
     }

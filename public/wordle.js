@@ -7,14 +7,14 @@ let letterPos=1;
 let nb=1;
 let guesses=0;
 let found=false;
+let wins;
+let losses;
+let NbOfgames;
 let results=document.getElementById("stats");
 const blurOverlay = document.createElement('div');
 let word="";
 let last_guessed;
-let wins=0
-let losses=0
-let games=0
-let stats=[]
+let outcomeVal;
 const displaywins=document.getElementById("wins")
 const displaylosses=document.getElementById("losses")
 const displayGamesPlayed=document.getElementById("gamesPlayed")
@@ -134,7 +134,7 @@ if(statsData.length>0){
 
 
 
- function keyboard(letter){
+ async function keyboard(letter){
         if(word.length<5 && found===false){
             if(letter!=="enter" && letter!=="erase"){
             document.getElementById("letter"+letterPos).textContent=letter;
@@ -173,12 +173,17 @@ if(statsData.length>0){
                 word="";
                 
                 if (last_guessed === wordleWord) {
-                  
+                   outcomeVal = 1;
+                   await updateStats()
+                   displaywins.innerHTML=wins;
+
+            
+
 
                    
                     // document.getElementById("status").textContent="YOU HAVE WON!!";
                      //document.getElementById("wordleword").textContent="The word was "+ wordleWord+"";
-                     wins++;
+                     
                      
                      //document.getElementById("score").textContent="It took you "+guesses+" guesses";
                      blurOverlay.style.position = 'fixed';
@@ -197,10 +202,14 @@ if(statsData.length>0){
                      found=true;
                 } 
                 else if (nb >= 30) { 
+                    outcomeVal=0;
+                    await updateStats()
+                    displaylosses.innerHTML=losses;
+
                     // document.getElementById("status").textContent="You have lost :(";
                      //document.getElementById("wordleword").textContent="The word was "+ wordleWord+"";
                      //document.getElementById("score").textContent="It took you "+guesses+" guesses";
-                     losses++;
+                
 
                      blurOverlay.style.position = 'fixed';
                      blurOverlay.style.top = '0';
@@ -224,6 +233,44 @@ if(statsData.length>0){
                 letterPos-=1;
                 return;
             }}
+
+
+async function updateStats(){
+    const response = await fetch(apiBase+'stats',{
+        method:'PUT',
+        headers:{'Content-Type': 'application/json','Authorization':token},
+
+        body:JSON.stringify({outcome:outcomeVal})
+
+
+    })
+    const result = await response.json()
+    wins = result[0].wins;
+    losses= result[0].losses
+    NbOfgames=result[0].gamesPlayed
+
+    console.log(result)
+}
+// jusr have to assign value to the html 
+
+
+
+
+
+//if(nb>=30){   
+  //  const response = await fetch(apiBase+'stats',{
+    //    method:'PUT',
+      //  headers:{'Authorization':token}
+    //})
+    //const nbOfGames= await response.json()
+    //displayGamesPlayed.textContent=nbOfGames[0].gamesPlayed
+
+
+function logout(){
+
+}
+
+
 function lightmode(){
                 document.body.classList.toggle("lightmode");
                 if(document.getElementById("mode").textContent==="Dark Mode"){
@@ -242,9 +289,13 @@ function lightmode(){
                     document.getElementById("title").style.color="black";
                 }
             }
-            
+         
  async function playagain(){
-    games++;
+    if(nb>=30){
+        await updateStats();
+        displayGamesPlayed.innerHTML=NbOfgames
+    }
+
   
     const key = document.querySelectorAll(".keys");
     
@@ -285,7 +336,7 @@ key.addEventListener("mouseout", event=> {
                 blurOverlay.remove();
                return; 
             }
-    
+        
 
             
 function closedd(){
@@ -341,7 +392,8 @@ if(token && token!=null){
                 window.keyboard =keyboard;
                 window.closedd = closedd;
                 window.lightmode = lightmode;
-                window.playagain = playagain;
+                window.playagain=playagain
                 window.reopen = reopen;
                window.change=change;
                window.authentication=authentication;
+               window.updateStats=updateStats
