@@ -132,7 +132,7 @@ if(statsData.length>0){
     }
 }
 
-
+// i want to fix the logic maybe compare to the new word eveyrtime ill see
 
  async function keyboard(letter){
         if(word.length<5 && found===false){
@@ -147,14 +147,14 @@ if(statsData.length>0){
             for(let i =0;i<word.length;i++){
                 for(let j=0;j<wordleWord.length;j++){
                     
-                if(word.charAt(i)===wordleWord.charAt(i)  ){ // i want to make it grey if the same letter is found already
+                if(word.charAt(i)===wordleWord.charAt(i) ){ // i want to make it grey if the same letter is found already
                    // document.getElementById("letter"+i).style.animation;
                     document.getElementById("letter"+nb).style.backgroundColor="rgba(0,255,0,0.5)";
                     document.getElementById(word.charAt(i)).style.backgroundColor="rgba(0,255,0,0.5)";
                     break;
 
                 }
-                else if(word.charAt(i)===wordleWord.charAt(j)   ){
+                else if(word.charAt(i)===wordleWord.charAt(j)){
                     document.getElementById("letter"+nb).style.backgroundColor="rgba(255,255,0,0.9)";
                     document.getElementById(word.charAt(i)).style.backgroundColor="rgba(255,255,0,0.9)";
                     
@@ -319,7 +319,7 @@ function lightmode(){
         
              
  async function playagain(){
-    if(nb>=30){
+    if(nb>=30 || last_guessed==wordleWord){
         await updateStats();
         displayGamesPlayed.innerHTML=NbOfgames
         document.querySelector(".again").style.visibility="hidden";
