@@ -104,7 +104,7 @@ async function authentication(){
 
 }
 }
-console.log(token)
+//console.log(token)
 
 
 async function fetchStats(){
@@ -123,7 +123,7 @@ if(statsData.length>0){
          displayGamesPlayed.innerHTML=statsData[0].gamesPlayed
     }
 
-         console.log(statsData)
+        // console.log(statsData)
         
     }catch(err){
         console.log(err.message)
@@ -173,6 +173,7 @@ if(statsData.length>0){
                 word="";
                 
                 if (last_guessed === wordleWord) {
+                    document.querySelector(".again").style.visibility="visible";
                    outcomeVal = 1;
                    await updateStats()
                    displaywins.innerHTML=wins;
@@ -202,6 +203,9 @@ if(statsData.length>0){
                      found=true;
                 } 
                 else if (nb >= 30) { 
+                document.querySelector(".again").style.visibility="visible";
+
+           
                     outcomeVal=0;
                     await updateStats()
                     displaylosses.innerHTML=losses;
@@ -249,7 +253,7 @@ async function updateStats(){
     losses= result[0].losses
     NbOfgames=result[0].gamesPlayed
 
-    console.log(result)
+   // console.log(result)
 }
 // jusr have to assign value to the html 
 
@@ -267,6 +271,11 @@ async function updateStats(){
 
 
 function logout(){
+    localStorage.removeItem('token')
+      mainPage.style.display="none"
+      auth.style.display="flex";
+      
+
 
 }
 
@@ -275,26 +284,45 @@ function lightmode(){
                 document.body.classList.toggle("lightmode");
                 if(document.getElementById("mode").textContent==="Dark Mode"){
 
-                   document.getElementById("reopen").style.backgroundColor=" rgba(0,0,0,0.01)";
+                   document.getElementById("reopen").style.backgroundColor="rgba(0,0,0,0.01)";
                    document.getElementById("reopen").style.color="white";
                    document.getElementById("reopen").style.border="1px  rgba(0, 0, 0, 0.1)";
+
+                   document.querySelector(".logout").style.backgroundColor="white";
+                   document.querySelector(".logout").style.color="black";
+                     document.getElementById("reopen").style.border="1px  rgba(0, 0, 0, 0.1)";
+
                    document.getElementById("mode").textContent="Light Mode";
+                      document.getElementById("mode").style.color="black";
+                    document.getElementById("mode").style.backgroundColor="white";
+
                    document.getElementById("title").style.color="white";
             }
                 else{
                     document.getElementById("reopen").style.backgroundColor="white";
                     document.getElementById("reopen").style.color="black";
+
+                    document.querySelector(".logout").style.backgroundColor="black";
+                    document.querySelector(".logout").style.color="white";
+
                     document.getElementById("reopen").style.border="1px  white";
+                    
                     document.getElementById("mode").textContent="Dark Mode";
+                    document.getElementById("mode").style.color="white";
+                    document.getElementById("mode").style.backgroundColor="black";
+                    
                     document.getElementById("title").style.color="black";
                 }
             }
-         
+            
+
+        
+             
  async function playagain(){
     if(nb>=30){
         await updateStats();
         displayGamesPlayed.innerHTML=NbOfgames
-    }
+        document.querySelector(".again").style.visibility="hidden";
 
   
     const key = document.querySelectorAll(".keys");
@@ -334,11 +362,13 @@ key.addEventListener("mouseout", event=> {
       });
                 results.classList.remove("open-stats");
                 blurOverlay.remove();
-               return; 
+               return;
+            }
+                
             }
         
-
-            
+        
+        
 function closedd(){
                 document.getElementById("reopen").style.visibility="visible";
                 results.classList.remove("open-stats");
@@ -397,3 +427,4 @@ if(token && token!=null){
                window.change=change;
                window.authentication=authentication;
                window.updateStats=updateStats
+               window.logout=logout
