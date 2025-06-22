@@ -200,7 +200,7 @@ console.log(wordleWord)
                 last_guessed=word;
                 word="";
                 
-                if (last_guessed === wordleWord  ) {
+                if (last_guessed === wordleWord) {
                    document.querySelector(".again").style.visibility="visible";
                    outcomeVal = 1;
                    await updateStats()
@@ -345,7 +345,7 @@ function lightmode(){
              
  async function playagain(){
     if(trys==7 || last_guessed==wordleWord){
-        await updateStats();
+        
         displayGamesPlayed.innerHTML=NbOfgames
         document.querySelector(".again").style.visibility="hidden";
 
@@ -447,11 +447,11 @@ if(token && token!=null){
 
 
                        
-                window.keyboard =keyboard;
-                window.closedd = closedd;
-                window.lightmode = lightmode;
-                window.playagain=playagain
-                window.reopen = reopen;
+               window.keyboard =keyboard;
+               window.closedd = closedd;
+               window.lightmode = lightmode;
+               window.playagain=playagain
+               window.reopen = reopen;
                window.change=change;
                window.authentication=authentication;
                window.updateStats=updateStats
