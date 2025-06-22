@@ -123,7 +123,7 @@ if(statsData.length>0){
          displayGamesPlayed.innerHTML=statsData[0].gamesPlayed
     }
 
-        // console.log(statsData)
+
         
     }catch(err){
         console.log(err.message)
@@ -132,7 +132,7 @@ if(statsData.length>0){
     }
 }
 
-// i want to fix the logic maybe compare to the new word eveyrtime ill see
+
 
 console.log(wordleWord)
  async function keyboard(letter){
@@ -159,7 +159,7 @@ console.log(wordleWord)
                     
                     //FOR GREEN
             for(let i =0;i<word.length;i++){
-                if(wordArr[i]===wordleWordArr[i] ){ // i want to make it grey if the same letter is found already
+                if(wordArr[i]===wordleWordArr[i] ){ 
                    // document.getElementById("letter"+i).style.animation;
                    
                     document.querySelector(`#try${trys} #letter${i}`).style.backgroundColor="rgba(0,255,0,0.5)";
@@ -169,7 +169,7 @@ console.log(wordleWord)
             
             }
             console.log(matched)
-            // the nb incrementation i have to fix
+         
             
             //FOR YELLOW
 
@@ -259,7 +259,7 @@ console.log(wordleWord)
                 
             }
 
-            // only one left not working
+
             if(letter==="erase" && found===false && word!==""){
          
            
@@ -288,19 +288,11 @@ async function updateStats(){
 
    // console.log(result)
 }
-// jusr have to assign value to the html 
 
 
 
 
 
-//if(nb>=30){   
-  //  const response = await fetch(apiBase+'stats',{
-    //    method:'PUT',
-      //  headers:{'Authorization':token}
-    //})
-    //const nbOfGames= await response.json()
-    //displayGamesPlayed.textContent=nbOfGames[0].gamesPlayed
 
 
 function logout(){
