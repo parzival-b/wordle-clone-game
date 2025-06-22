@@ -3,9 +3,9 @@ import random from "./words.js"
 let words = new random();
 
 let wordleWord= await words.randomWord();
-let letterPos=1;
+let letterPos=0;
 let nb=1;
-let guesses=0;
+let trys=1;
 let found=false;
 let wins;
 let losses;
@@ -134,46 +134,74 @@ if(statsData.length>0){
 
 // i want to fix the logic maybe compare to the new word eveyrtime ill see
 
+console.log(wordleWord)
  async function keyboard(letter){
-        if(word.length<5 && found===false){
+
+        if(word.length<5 && found===false ){
             if(letter!=="enter" && letter!=="erase"){
-            document.getElementById("letter"+letterPos).textContent=letter;
+            document.querySelector(`#try${trys} #letter${letterPos}`).textContent=letter;
+            
             word+=letter;
+           
             letterPos++;
         }
-    }
+         
+        
+        }
+
+        let matched= Array(5).fill(false);
+
             if(letter==="enter"){
                 if(word.length==5){
+                    console.log(word)
+                    let wordArr=word.split("")
+                    let wordleWordArr = wordleWord.split("")
+                    
+                    //FOR GREEN
             for(let i =0;i<word.length;i++){
-                for(let j=0;j<wordleWord.length;j++){
-                    
-                if(word.charAt(i)===wordleWord.charAt(i) ){ // i want to make it grey if the same letter is found already
+                if(wordArr[i]===wordleWordArr[i] ){ // i want to make it grey if the same letter is found already
                    // document.getElementById("letter"+i).style.animation;
-                    document.getElementById("letter"+nb).style.backgroundColor="rgba(0,255,0,0.5)";
-                    document.getElementById(word.charAt(i)).style.backgroundColor="rgba(0,255,0,0.5)";
-                    break;
-
+                   
+                    document.querySelector(`#try${trys} #letter${i}`).style.backgroundColor="rgba(0,255,0,0.5)";
+                    document.getElementById(wordArr[i]).style.backgroundColor="rgba(0,255,0,0.5)";
+                    matched[i]=true;
                 }
-                else if(word.charAt(i)===wordleWord.charAt(j)){
-                    document.getElementById("letter"+nb).style.backgroundColor="rgba(255,255,0,0.9)";
-                    document.getElementById(word.charAt(i)).style.backgroundColor="rgba(255,255,0,0.9)";
+            
+            }
+            console.log(matched)
+            // the nb incrementation i have to fix
+            
+            //FOR YELLOW
+
+                for(let j=0;j<word.length;j++){
+                      if (matched[j]) continue;
                     
-                    break;
+                let index=wordleWord.indexOf(wordArr[j])
+                 if(wordleWordArr.includes(wordArr[j]) && matched[index]!=true){
+                     document.querySelector(`#try${trys} #letter${j}`).style.backgroundColor="rgba(255,255,0,0.9)";
+                    document.getElementById(wordArr[j]).style.backgroundColor="rgba(255,255,0,0.9)";
+              
                 }
                 else{
 
-                    document.getElementById("letter"+nb).style.backgroundColor="grey";   
-                    document.getElementById(word.charAt(i)).style.backgroundColor="grey";
+                     document.querySelector(`#try${trys} #letter${j}`).style.backgroundColor="grey";   
+                     document.getElementById(wordArr[j]).style.backgroundColor="grey";
+                    
                 }
+                  
             }
-                nb++;
+            
+            
+                trys++; 
+             
             }
-            guesses++;
+           
+          letterPos=0;
                 last_guessed=word;
                 word="";
                 
-                if (last_guessed === wordleWord) {
-                    document.querySelector(".again").style.visibility="visible";
+                if (last_guessed === wordleWord  ) {
+                   document.querySelector(".again").style.visibility="visible";
                    outcomeVal = 1;
                    await updateStats()
                    displaywins.innerHTML=wins;
@@ -202,7 +230,7 @@ if(statsData.length>0){
              
                      found=true;
                 } 
-                else if (nb >= 30) { 
+                else if (trys == 7) { 
                 document.querySelector(".again").style.visibility="visible";
 
            
@@ -228,16 +256,21 @@ if(statsData.length>0){
                      results.style.zIndex = '100';
                      results.classList.add("open-stats"); 
                 }
-            }
-            }
-            if(letter==="erase" && found===false && word!==""){
                 
-                document.getElementById("letter"+(letterPos-1)).textContent="";
+            }
+
+            // only one left not working
+            if(letter==="erase" && found===false && word!==""){
+         
+           
+                document.querySelector(`#try${trys} #letter${letterPos-1}`).textContent="";
                 word=word.slice(0,-1);
+            
                 letterPos-=1;
                 return;
-            }}
-
+            }
+            
+        }
 
 async function updateStats(){
     const response = await fetch(apiBase+'stats',{
@@ -319,17 +352,20 @@ function lightmode(){
         
              
  async function playagain(){
-    if(nb>=30 || last_guessed==wordleWord){
+    if(trys==7 || last_guessed==wordleWord){
         await updateStats();
         displayGamesPlayed.innerHTML=NbOfgames
         document.querySelector(".again").style.visibility="hidden";
 
   
-    const key = document.querySelectorAll(".keys");
-    
+      const key = document.querySelectorAll(".keys");
+       document.querySelectorAll(".letters").forEach((letter) => {
+    letter.textContent = ""; 
+    letter.style.backgroundColor = "black"; 
+});
+
        for(let i=1; i<31;i++){
-        document.getElementById("letter"+i).textContent="";
-        document.getElementById("letter"+i).style.backgroundColor="black";
+      
         if((i-1)<28 && key.length>0 ){
             
         key[i-1].style.backgroundColor="white";
@@ -339,14 +375,14 @@ function lightmode(){
        
   }
   
-      nb=1;
-      letterPos=1;
+      trys=1;
+      letterPos=0;
       word="";
-      guesses=0;
+    
       found=false;
 
       wordleWord= await words.randomWord();
-
+console.log(wordleWord)
     
       key.forEach(key => {
         
