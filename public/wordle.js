@@ -151,8 +151,8 @@ console.log(wordleWord)
 
         let matched= Array(5).fill(false);
 
-            if(letter==="enter"){
-                if(word.length==5){
+            if(letter==="enter" && word.length==5){
+               
                     console.log(word)
                     let wordArr=word.split("")
                     let wordleWordArr = wordleWord.split("")
@@ -193,10 +193,12 @@ console.log(wordleWord)
             
             
                 trys++; 
+             letterPos=0;
              
-            }
+            
+            console.log(letterPos)
            
-          letterPos=0;
+          
                 last_guessed=word;
                 word="";
                 
@@ -205,6 +207,7 @@ console.log(wordleWord)
                    outcomeVal = 1;
                    await updateStats()
                    displaywins.innerHTML=wins;
+                   console.log(wordleWord)
 
             
 
@@ -237,7 +240,7 @@ console.log(wordleWord)
                     outcomeVal=0;
                     await updateStats()
                     displaylosses.innerHTML=losses;
-
+console.log(wordleWord)
                     // document.getElementById("status").textContent="You have lost :(";
                      //document.getElementById("wordleword").textContent="The word was "+ wordleWord+"";
                      //document.getElementById("score").textContent="It took you "+guesses+" guesses";
